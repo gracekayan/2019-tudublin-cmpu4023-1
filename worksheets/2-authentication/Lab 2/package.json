@@ -1,0 +1,23 @@
+{
+  "name": "index",
+  "version": "1.0.0",
+  "description": "Lab 1 EAD",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "Catherine Kane",
+  "license": "ISC",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "express": "^4.16.4",
+    "jsonwebtoken": "^8.4.0",
+    "massive": "^5.7.5",
+    "pg": "^7.8.0"
+  },
+  "devDependencies": {
+    "babel-preset-env": "^1.7.0"
+  }
+}
