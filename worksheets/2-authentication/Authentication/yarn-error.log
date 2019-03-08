@@ -1,0 +1,46 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/Cellar/yarn/1.12.1/libexec/bin/yarn.js add dotenv
+
+PATH: 
+  /Library/Frameworks/Python.framework/Versions/3.6/bin:/Users/CatherineKane/anaconda2/bin:/opt/local/bin:/opt/local/sbin:/Library/Frameworks/Python.framework/Versions/3.5/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/share/dotnet:/usr/local/go/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/Wireshark.app/Contents/MacOS:/Applications/DevDesktop/tools
+
+Yarn version: 
+  1.12.1
+
+Node version: 
+  10.13.0
+
+Platform: 
+  darwin x64
+
+Trace: 
+  SyntaxError: /Users/CatherineKane/Desktop/Development/2019-tudublin-cmpu4023-FORKED/2019-tudublin-cmpu4023-1/worksheets/2-authentication/JWT Authentication/package.json: Unexpected token } in JSON at position 175
+      at JSON.parse (<anonymous>)
+      at /usr/local/Cellar/yarn/1.12.1/libexec/lib/cli.js:1166:59
+      at Generator.next (<anonymous>)
+      at step (/usr/local/Cellar/yarn/1.12.1/libexec/lib/cli.js:92:30)
+      at /usr/local/Cellar/yarn/1.12.1/libexec/lib/cli.js:103:13
+
+npm manifest: 
+  {
+    "name": "jwt-authentication",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "express": "^4.16.4",
+      "jsonwebtoken": "^8.4.0",
+      "massive": "^5.7.6"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

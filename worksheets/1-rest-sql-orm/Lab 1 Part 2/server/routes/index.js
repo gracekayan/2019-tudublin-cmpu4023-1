@@ -1,7 +1,7 @@
-var express = require('express');
-var router = express.Router();
-var models = require('../models/index');
-
+const express = require('express');
+const router = express.Router();
+const models = require('../models/index');
+const crypto = require('crypto');
 
 router.get('/', function (req, res, next) {
     res.render('index', {title: 'Express'});
@@ -115,15 +115,30 @@ router.get('/users', function (req, res) {
     });
 });
 
+
+/*
+router.post('/signup', function(req, res, next){
+let hash = crypt(req.params.password, 8);
+users.insert({
+    email: reqs.params.email,
+    password: hash
+}, 'id').then(function(result){
+    res.send(msg: "Successful.");
+});
+});
+ */
 //post new user
 router.post('/users', function (req, res) {
+    let hashed = crypto(req.params.password);
+
     models.users.create({
         email: req.body.email,
-        password: req.body.password,
+        password: hashed,
         details: req.body.details
     }).then(function (users) {
         res.json(users);
     });
 });
+
 
 module.exports = router;
