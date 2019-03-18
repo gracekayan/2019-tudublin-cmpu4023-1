@@ -30,28 +30,6 @@ function send200Res(res) {
     res.end();
 }
 
-// //this is an example of how status code and type
-// function testingRequest(req, res) {
-//     console.log("User made request " + req.url);
-//     //status code and type of response
-//     res.writeHead(200, {'Context-Type': 'text/plain'});
-//     res.write("Here is your response");
-//     res.end();
-// }
-//
-// //handle the user request
-// function onRequest(req, res) {
-//     console.log("User made request " + req.url);
-//     if (req.method == 'GET' && req.url == '/') {
-//         res.writeHead(200, {'Context-Type': 'text/html'});
-//         //html files are sent back in a stream rather than one chunk
-//         fs.createReadStream('index.html').pipe(res);
-//     }
-//     else {
-//         send404Res(res);
-//     }
-// }
-
 function createHMAC(sk, url) {
     console.log(url);
     const hmac = crypto.createHmac('sha256', sk); //second parameter is a secret key
@@ -84,7 +62,7 @@ conn.then(db => {
             });
     })
 
-    app.post('/api/task/', (req, resp) => {
+    app.post('/api/task', (req, resp) => {
         let query = req.originalUrl;
         let token = req.headers["authorization"];
         let client_sig = req.headers['x-signature'];

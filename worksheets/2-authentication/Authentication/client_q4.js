@@ -13,7 +13,6 @@ function createHMAC(sk, url) {
 }
 
 
-
 http.get({
     hostname: "localhost",
     port: 5000,

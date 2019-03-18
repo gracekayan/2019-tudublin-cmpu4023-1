@@ -17,7 +17,6 @@ const conn = massive({
     password: 'postgres'
 })
 
-
 /*
 QUESTION 1 and 2
 */
@@ -33,7 +32,7 @@ conn.then(db => {
     */
     app.get('/api/create_user', (req, res) =>
         db.query("INSERT INTO user_table(username, email, password) " +
-            "VALUES (lower('Test4'), lower('TESTING4@gmail.com'), " +
+            "VALUES (lower('Test55'), lower('TESTING4@gmail.com'), " +
             "crypt('testingz123', gen_salt('bf', 8))) RETURNING id, username, email, password;")
             .then(resp => {
                 res.send(resp);
@@ -45,83 +44,51 @@ conn.then(db => {
     (if successful) a JWT with a set of claims.
     The claims should include, minimally, the user id and an expiry timestamp; the token should be set to expire no later than 24 hours        */
 
-    app.post('/api/login/:id', (req, res) => {
+    app.post('/api/login-user', (req, res) => {
 
         const userID = req.params.id;
-        const username = req.params.username;
-        // const password = crypt(req.params.password, gen_salt('bf', 8));
-
-        db.user_table.find({id: userID}, {}).then(
-            user => {
-                console.log(user);
-
-                jwt.sign({user}, 'secretkey', {expiresIn: '1 day'}, (err, token) => {
-                    res.json({
-                        token,
-                        user
-                    });
-                });
-            });
-    });
-
-    app.post('/api/login-user', (req, res) => {
         const username = req.query.username;
         const password = req.query.password;
 
-        db.query("SELECT password =crypt('" + password + "', password) from user_table WHERE username = '" + username + "'").then(resp => {
-
-            res.send(resp);
-
-            const myObject = Object.values(resp[0]).toString();
-            if (myObject === 'true') {
-                console.log('got here as true');
-                app.get('db').query("UPDATE products_table SET name='TESTINGTHIS' where id=2").then(resp => {
-
-                    jwt.sign({resp}, 'secretkey', {expiresIn: '1 day'}, (err, token) =>
-                    {
+        db.query("SELECT password =crypt('" + password + "', password) from user_table WHERE username = '" + username + "'").then(
+            user => {
+                const myObject = Object.values(user[0]).toString();
+                if (myObject === 'true') {
+                    jwt.sign({user}, 'secretkey', {expiresIn: '1 day'}, (err, token) => {
                         res.json({
                             token,
-                            resp
-                        })
-                    })
-                        console.log(resp);
-                })
-            }
-            else {
-                res.send("Not authenticated, please try again.");
-            }
-        }).catch(err => res.send(err) )
+                            userID
+                        });
+                    });
+                }
+            });
     });
 
-    app.post('/api/posts', verifyUserToken, (req, res) => {
-        jwt.verify(req.token, 'secretkey', (err, userData) => {
+    //updating a protected resource table e.g. update products table
+    app.post('/api/test-token', verifyUserToken, (req, res) => {
+        jwt.verify(req.token, 'secretkey', (err) => {
             if (err) {
                 res.sendStatus(401);
             } else {
-                res.json({
-                    message: 'Post created...',
-                    userData
-                });
+                db.query("UPDATE products_table SET name='TESTINGTHISNOW' where id=2").then(resp => {
+                    res.json({
+                        message: 'Token authenticated...'
+                    })
+                })
             }
         });
 
     });
 
-    //Format of token
-    //Authorization: Bearer <access_token>
-    //verify token
+//Create token and use in authorization header as - Bearer <token>
     function verifyUserToken(req, res, next) {
-        // Get the auth header value
+        // Retrieve auth header
         const bearerHeader = req.headers['authorization'];
-        //Check if bearer is undefined
         if (typeof bearerHeader !== 'undefined') {
-            //Split at the space
             const bearer = bearerHeader.split(' ');
-            //Get token from array
             const bearerToken = bearer[1];
-            //Set the token
+            //Set token
             req.token = bearerToken;
-            //Next middleware
             next();
         } else {
             //Forbidden

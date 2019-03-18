@@ -1,6 +1,6 @@
-const express = require('express')
-const app = express()
-const port = 3000
+const express = require('express');
+const app = express();
+const port = 3000;
 
 app.get('/', (req, res) => res.send('Hello World!'))
 
@@ -13,7 +13,7 @@ const conn = massive({
     port: 5432,
     database: 'pgguide',
     user: 'postgres',
-    password: ''
+    password: 'Electrics10'
 })
 
 conn.then(db => {
@@ -79,9 +79,9 @@ conn.then(db => {
         "    INNER JOIN purchases p\n" +
         "    on pi.purchase_id = p.id\n" +
         "    INNER JOIN users u\n" +
-        "    on p.user_id = u.id").then( resp =>
+        "    on p.id = u.id").then( resp =>
     {
-        console.log(resp);
+        res.send(resp);
     }))
 
 
@@ -114,27 +114,21 @@ conn.then(db => {
     //example of SQL injection
     app.get('/products/inject', (req, res) =>
     {
-
         let query_string = req.query.name;
-
-        db.query("SELECT * FROM products WHERE title= '" + query_string + "' ").then( resp => {
+        db.query("SELECT * FROM products WHERE title=" + query_string + "' ").then( resp => {
         res.send(resp);
         })
-
-    })
+    });
 
 
     //using a parametrised query
     app.get('/products/sql-protect', (req, res) =>
     {
-
         let query_string = req.query.name;
-
         db.query("SELECT * FROM products WHERE title=$1", query_string ).then(resp => {
             res.send(resp);
         })
-
-    })
+    });
 
     //using a stored procedure
     app.get('/users/sql-protect-it', (req, res) =>
